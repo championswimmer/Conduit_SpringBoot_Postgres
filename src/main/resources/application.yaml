@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/conduitspring
+    username: conduitspring
+    password: conduitspring
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create # TODO: not approprate for production
+    properties:
+      hibernate.format_sql: true
+server:
+  port: 4567
