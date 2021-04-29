@@ -18,6 +18,27 @@ public class UserService {
         this.userRepo = userRepo;
     }
 
+    public UserEntity registerNewUser(String username, String password, String email) {
+        return null;
+    }
+
+    /**
+     * useful for login
+     * @return
+     */
+    public UserEntity verifyUser(String email, String password) {
+        return null;
+    }
+
+    public UserEntity findUserById(Long userId) {
+        return null;
+    }
+
+    public UserEntity updateUserDetails(UserEntity userEntity) {
+        return null;
+    }
+
+
     public UserEntity findUserByUsername(String username) {
         UserEntity user = userRepo.findUserEntityByUsername(username);
         if (user == null) throw new UserNotFoundException();

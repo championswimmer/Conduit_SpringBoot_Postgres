@@ -1,47 +1,35 @@
 package com.scaler.conduit.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import java.util.Date;
+import lombok.Getter;
+import lombok.Setter;
 
-@Entity
+import javax.persistence.*;
+import java.util.List;
+
+@Entity(name = "articles")
+@Getter
+@Setter
 public class ArticleEntity extends BaseEntity {
     private String slug;
     private String title;
     private String description;
     private String body;
+    private UserEntity author;
+    private List<CommentEntity> comments;
+    private List<TagEntity> tags;
 
-    public void setBody(String body) {
-        this.body = body;
+    @ManyToOne(fetch = FetchType.EAGER)
+    public UserEntity getAuthor() {
+        return author;
     }
 
-
-    public String getSlug() {
-        return slug;
+    @OneToMany(fetch = FetchType.LAZY)
+    public List<CommentEntity> getComments() {
+        return comments;
     }
 
-    public void setSlug(String slug) {
-        this.slug = slug;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getBody() {
-        return body;
+    @ManyToMany(fetch = FetchType.EAGER)
+    public List<TagEntity> getTags() {
+        return tags;
     }
 }
