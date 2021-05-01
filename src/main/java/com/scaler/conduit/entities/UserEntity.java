@@ -1,5 +1,6 @@
 package com.scaler.conduit.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,10 +13,19 @@ import javax.persistence.Transient;
 public class UserEntity extends BaseEntity {
 
     private String email;
+    private String password;
     private String bio;
     private String image;
     private String username;
-    @Transient
     private String token;
 
+    @Transient
+    public String getToken() {
+        return token;
+    }
+
+    @JsonIgnore
+    public String getPassword() {
+        return password;
+    }
 }

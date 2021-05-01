@@ -18,8 +18,8 @@ public class ProfilesController {
     }
 
     @GetMapping("/profiles/{username}")
-    UserEntity getUserByUsername(@PathVariable("username") String username) {
-        return users.findUserByUsername(username);
+    ResponseEntity<UserEntity> getUserByUsername(@PathVariable("username") String username) {
+        return ResponseEntity.ok(users.findUserByUsername(username));
     }
 
     @PostMapping("/users")
