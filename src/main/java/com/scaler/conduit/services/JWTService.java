@@ -21,7 +21,7 @@ public class JWTService {
     private Key key = Keys.hmacShaKeyFor(JWT_KEY.getBytes(StandardCharsets.UTF_8));
     JwtParser jwtParser =  Jwts.parserBuilder().setSigningKey(key).build();
 
-    String createJwt(UserEntity userEntity) {
+    public String createJwt(UserEntity userEntity) {
         return Jwts.builder()
                 .setSubject(userEntity.getUsername())
                 .setIssuedAt(new Date())
@@ -30,7 +30,7 @@ public class JWTService {
                 .compact();
     }
 
-    String decodeJwt(String jwts) {
+    public String decodeJwt(String jwts) {
         Claims claims = jwtParser.parseClaimsJws(jwts).getBody();
         return claims.getSubject();
     }
