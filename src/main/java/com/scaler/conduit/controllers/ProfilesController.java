@@ -1,15 +1,12 @@
 package com.scaler.conduit.controllers;
 
+import com.scaler.conduit.dtos.UserSignupDto;
 import com.scaler.conduit.entities.ErrorEntity;
 import com.scaler.conduit.entities.UserEntity;
 import com.scaler.conduit.services.UserService;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ProfilesController {
@@ -24,6 +21,18 @@ public class ProfilesController {
     UserEntity getUserByUsername(@PathVariable("username") String username) {
         return users.findUserByUsername(username);
     }
+
+    @PostMapping("/users")
+    ResponseEntity<UserEntity> registerUser(@RequestBody UserSignupDto body) {
+        UserEntity newUser =  users.registerNewUser(
+                body.getUser().getUsername(),
+                body.getUser().getPassword(),
+                body.getUser().getEmail()
+        );
+        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+
+    }
+
 
     @ExceptionHandler({RuntimeException.class})
     ResponseEntity<ErrorEntity> handleExceptions(RuntimeException exception) {

@@ -24,6 +24,7 @@ public class ArticleEntity extends BaseEntity {
     }
 
     @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "article_id")
     public List<CommentEntity> getComments() {
         return comments;
     }

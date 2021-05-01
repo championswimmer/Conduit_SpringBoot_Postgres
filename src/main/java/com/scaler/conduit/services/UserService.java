@@ -7,19 +7,26 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
     private final UserRepository userRepo;
+    private final JWTService jwtService;
 
     public static class UserNotFoundException extends RuntimeException {
         public UserNotFoundException() {
             super("No such user found");
         }
     }
-
-    public UserService(UserRepository userRepo) {
+    public UserService(UserRepository userRepo, JWTService jwtService) {
         this.userRepo = userRepo;
+        this.jwtService = jwtService;
     }
 
     public UserEntity registerNewUser(String username, String password, String email) {
-        return null;
+        UserEntity newUser = new UserEntity();
+        newUser.setUsername(username);
+        newUser.setEmail(email);
+        newUser = userRepo.save(newUser);
+        newUser.setToken(jwtService.createJwt(newUser));
+
+        return userRepo.save(newUser);
     }
 
     /**

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 @Entity(name = "users")
 @Getter
@@ -14,5 +15,7 @@ public class UserEntity extends BaseEntity {
     private String bio;
     private String image;
     private String username;
+    @Transient
+    private String token;
 
 }
