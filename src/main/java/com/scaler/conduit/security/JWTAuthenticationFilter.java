@@ -7,10 +7,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.security.web.authentication.AuthenticationFilter;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 
+@Component
 public class JWTAuthenticationFilter extends AuthenticationFilter {
     static class JWTAuthentication implements Authentication {
         private final String jwtString;
@@ -82,8 +84,7 @@ public class JWTAuthenticationFilter extends AuthenticationFilter {
         }
     }
 
-
-    public JWTAuthenticationFilter() {
-        super(new JWTAuthManager(), new Converter());
+    public JWTAuthenticationFilter(JWTAuthManager jwtAuthManager) {
+        super(jwtAuthManager, new Converter());
     }
 }

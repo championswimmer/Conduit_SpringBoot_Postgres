@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.AnonymousAuthenticationFi
 @Configuration
 @EnableWebSecurity
 public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired JWTAuthenticationFilter jwtAuthenticationFilter;
 
     @Override
     protected AuthenticationManager authenticationManager() throws Exception {
@@ -32,7 +33,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests().anyRequest().authenticated()
                 .and()
-                .addFilterBefore(new JWTAuthenticationFilter(), AnonymousAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter, AnonymousAuthenticationFilter.class)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 }
