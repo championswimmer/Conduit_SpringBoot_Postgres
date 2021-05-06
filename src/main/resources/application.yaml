@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/conduitspring
-    username: conduitspring
-    password: conduitspring
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/conduitspring}
+    username: ${SPRING_DATASOURCE_USERNAME:conduitspring}
+    password: ${SPRING_DATASOURCE_USERNAME:conduitspring}
     driver-class-name: org.postgresql.Driver
   jpa:
     show-sql: true
@@ -11,4 +11,4 @@ spring:
     properties:
       hibernate.format_sql: true
 server:
-  port: 4567
+  port: ${PORT:4567}
