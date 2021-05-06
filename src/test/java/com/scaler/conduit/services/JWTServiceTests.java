@@ -20,8 +20,7 @@ public class JWTServiceTests {
 
     @Test
     void decodeJWT_can_get_username_from_JWT() {
-//        String jwts = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhcm5hdiIsImlhdCI6MTYxOTg4NTkwMCwiZXhwIjoxODI5ODg1OTY3fQ.LPad1t4Mo3M26KaXTQ6XeD7XSBvfa4ifnyFRWHVRJs-uBOApwUeNNONeAn_tSgvm0YV3OYbZtu0sWN1r7PIgJg";
-        String jwts = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBcm5hdiIsImlhdCI6MTYxOTg4ODM1OSwiZXhwIjoxNjIwNDkzMTU5fQ.dQ6SZVRB28nq-qMhGB0yDFvlzoAEYPfNk4T_KUmuTFgstSXBp4iRiEqO0zEkpOuClk5euIFGLPxWDxNeCt6rcg";
+        String jwts = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhcm5hdiIsImlhdCI6MTYxOTg4NTkwMCwiZXhwIjoxODI5ODg1OTY3fQ.LPad1t4Mo3M26KaXTQ6XeD7XSBvfa4ifnyFRWHVRJs-uBOApwUeNNONeAn_tSgvm0YV3OYbZtu0sWN1r7PIgJg";
         String username =  jwtService.decodeJwt(jwts);
         assertEquals("arnav", username);
     }
