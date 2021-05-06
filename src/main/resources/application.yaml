@@ -2,7 +2,7 @@ spring:
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/conduitspring}
     username: ${SPRING_DATASOURCE_USERNAME:conduitspring}
-    password: ${SPRING_DATASOURCE_USERNAME:conduitspring}
+    password: ${SPRING_DATASOURCE_PASSWORD:conduitspring}
     driver-class-name: org.postgresql.Driver
   jpa:
     show-sql: true

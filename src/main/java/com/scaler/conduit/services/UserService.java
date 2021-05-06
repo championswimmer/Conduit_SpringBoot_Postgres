@@ -73,11 +73,6 @@ public class UserService {
         return null;
     }
 
-    public UserEntity updateUserDetails(UserEntity userEntity) {
-        return null;
-    }
-
-
     public UserEntity findUserByUsername(String username) {
         UserEntity user = userRepo.findUserEntityByUsername(username);
         if (user == null) throw new UserNotFoundException();
