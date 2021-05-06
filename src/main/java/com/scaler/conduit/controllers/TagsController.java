@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 public class TagsController {
-    private TagsService tags;
+    private final TagsService tags;
 
     public TagsController(TagsService tags) {
         this.tags = tags;

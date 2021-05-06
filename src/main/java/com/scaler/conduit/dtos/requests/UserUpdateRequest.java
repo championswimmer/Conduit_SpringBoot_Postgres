@@ -1,4 +1,4 @@
-package com.scaler.conduit.dtos;
+package com.scaler.conduit.dtos.requests;
 
 import lombok.Getter;
 

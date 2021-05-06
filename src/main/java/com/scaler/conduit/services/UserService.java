@@ -17,6 +17,7 @@ public class UserService {
             super("No such user found");
         }
     }
+
     public static class UserPasswordIncorectException extends SecurityException {
         public UserPasswordIncorectException() {
             super("Invalid Password");
@@ -40,7 +41,6 @@ public class UserService {
         newUser.setEmail(email);
         newUser.setPassword(bcryptEncoder.encode(password));
         newUser = userRepo.save(newUser);
-        newUser.setToken(jwtService.createJwt(newUser));
 
         return userRepo.save(newUser);
     }
@@ -48,6 +48,7 @@ public class UserService {
     /**
      * find and verify a user given email and password
      * userful for login
+     *
      * @return user object if found and verified, else null
      */
     public UserEntity verifyUser(String email, String password) {

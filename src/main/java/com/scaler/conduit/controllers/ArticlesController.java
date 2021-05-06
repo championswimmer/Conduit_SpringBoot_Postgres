@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 public class ArticlesController {
-    private ArticleService articles;
+    private final ArticleService articles;
 
     public ArticlesController(ArticleService articles) {
         this.articles = articles;

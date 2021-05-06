@@ -8,7 +8,7 @@ import java.util.List;
 
 @Service
 public class TagsService {
-    private TagRepository tagsRepo;
+    private final TagRepository tagsRepo;
 
     public TagsService(TagRepository tagsRepo) {
         this.tagsRepo = tagsRepo;

@@ -1,8 +1,10 @@
 package com.scaler.conduit.controllers;
 
-import com.scaler.conduit.dtos.UserLoginRequest;
-import com.scaler.conduit.dtos.UserSignupRequest;
-import com.scaler.conduit.dtos.UserUpdateRequest;
+import com.scaler.conduit.converters.UserObjectConverter;
+import com.scaler.conduit.dtos.requests.UserLoginRequest;
+import com.scaler.conduit.dtos.requests.UserSignupRequest;
+import com.scaler.conduit.dtos.requests.UserUpdateRequest;
+import com.scaler.conduit.dtos.responses.UserResponse;
 import com.scaler.conduit.entities.ErrorEntity;
 import com.scaler.conduit.entities.UserEntity;
 import com.scaler.conduit.services.UserService;
@@ -15,43 +17,47 @@ import org.springframework.web.bind.annotation.*;
 public class UsersController {
 
     private final UserService users;
+    private final UserObjectConverter converter;
 
-    public UsersController(UserService users) {
+    public UsersController(UserService users, UserObjectConverter converter) {
         this.users = users;
+        this.converter = converter;
     }
 
     @GetMapping("/profiles/{username}")
-    ResponseEntity<UserEntity> getUserByUsername(@PathVariable("username") String username) {
-        return ResponseEntity.ok(users.findUserByUsername(username));
+    ResponseEntity<UserResponse> getUserByUsername(@PathVariable("username") String username) {
+        return ResponseEntity.ok(
+                converter.entityToResponse(users.findUserByUsername(username))
+        );
     }
 
     @GetMapping("/user")
-    ResponseEntity<UserEntity> getCurrentUser(@AuthenticationPrincipal UserEntity userEntity) {
-        return ResponseEntity.ok(userEntity);
+    ResponseEntity<UserResponse> getCurrentUser(@AuthenticationPrincipal UserEntity userEntity) {
+        return ResponseEntity.ok(converter.entityToResponse(userEntity));
     }
 
     @PostMapping("/users")
-    ResponseEntity<UserEntity> registerUser(@RequestBody UserSignupRequest body) {
+    ResponseEntity<UserResponse> registerUser(@RequestBody UserSignupRequest body) {
         UserEntity newUser = users.registerNewUser(
                 body.getUser().getUsername(),
                 body.getUser().getPassword(),
                 body.getUser().getEmail()
         );
-        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+        return new ResponseEntity<>(converter.entityToResponse(newUser), HttpStatus.CREATED);
 
     }
 
     @PostMapping("/users/login")
-    ResponseEntity<UserEntity> loginUser(@RequestBody UserLoginRequest body) {
+    ResponseEntity<UserResponse> loginUser(@RequestBody UserLoginRequest body) {
         UserEntity user = users.verifyUser(
                 body.getUser().getEmail(),
                 body.getUser().getPassword()
         );
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(converter.entityToResponse(user));
     }
 
     @PatchMapping("/user")
-    ResponseEntity<UserEntity> updateUser(
+    ResponseEntity<UserResponse> updateUser(
             @AuthenticationPrincipal UserEntity userEntity,
             @RequestBody UserUpdateRequest body
     ) {
@@ -62,7 +68,7 @@ public class UsersController {
         userEntity.setPassword(body.getUser().getPassword());
 
         return new ResponseEntity<>(
-                users.updateUser(userEntity),
+                converter.entityToResponse(users.updateUser(userEntity)),
                 HttpStatus.ACCEPTED
         );
 

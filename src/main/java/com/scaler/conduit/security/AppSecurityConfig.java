@@ -1,7 +1,5 @@
 package com.scaler.conduit.security;
 
-import com.scaler.conduit.services.JWTService;
-import com.scaler.conduit.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -15,7 +13,8 @@ import org.springframework.security.web.authentication.AnonymousAuthenticationFi
 @Configuration
 @EnableWebSecurity
 public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired JWTAuthenticationFilter jwtAuthenticationFilter;
+    @Autowired
+    JWTAuthenticationFilter jwtAuthenticationFilter;
 
     @Override
     protected AuthenticationManager authenticationManager() throws Exception {
