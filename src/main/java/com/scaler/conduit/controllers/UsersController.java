@@ -1,6 +1,7 @@
 package com.scaler.conduit.controllers;
 
-import com.scaler.conduit.dtos.UserSignupDto;
+import com.scaler.conduit.dtos.UserLoginRequest;
+import com.scaler.conduit.dtos.UserSignupRequest;
 import com.scaler.conduit.entities.ErrorEntity;
 import com.scaler.conduit.entities.UserEntity;
 import com.scaler.conduit.services.UserService;
@@ -9,11 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-public class ProfilesController {
+public class UsersController {
 
     private final UserService users;
 
-    public ProfilesController(UserService users) {
+    public UsersController(UserService users) {
         this.users = users;
     }
 
@@ -23,7 +24,7 @@ public class ProfilesController {
     }
 
     @PostMapping("/users")
-    ResponseEntity<UserEntity> registerUser(@RequestBody UserSignupDto body) {
+    ResponseEntity<UserEntity> registerUser(@RequestBody UserSignupRequest body) {
         UserEntity newUser =  users.registerNewUser(
                 body.getUser().getUsername(),
                 body.getUser().getPassword(),
@@ -31,6 +32,15 @@ public class ProfilesController {
         );
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
 
+    }
+
+    @PostMapping("/users/login")
+    ResponseEntity<UserEntity> loginUser(@RequestBody UserLoginRequest body) {
+        UserEntity user =  users.verifyUser(
+                body.getUser().getEmail(),
+                body.getUser().getPassword()
+        );
+        return ResponseEntity.ok(user);
     }
 
 

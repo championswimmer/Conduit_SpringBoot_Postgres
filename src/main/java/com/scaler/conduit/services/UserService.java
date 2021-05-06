@@ -17,6 +17,11 @@ public class UserService {
             super("No such user found");
         }
     }
+    public static class UserPasswordIncorectException extends SecurityException {
+        public UserPasswordIncorectException() {
+            super("Invalid Password");
+        }
+    }
 
     @Bean
     public static BCryptPasswordEncoder bcryptEncoder() {
@@ -41,11 +46,20 @@ public class UserService {
     }
 
     /**
-     * useful for login
-     * @return
+     * find and verify a user given email and password
+     * userful for login
+     * @return user object if found and verified, else null
      */
     public UserEntity verifyUser(String email, String password) {
-        return null;
+        UserEntity user = userRepo.findUserEntityByEmail(email);
+        if (user == null)
+            throw new UserNotFoundException();
+
+        if (!bcryptEncoder.matches(password, user.getPassword()))
+            throw new UserPasswordIncorectException();
+
+
+        return user;
     }
 
     public UserEntity findUserById(Long userId) {
