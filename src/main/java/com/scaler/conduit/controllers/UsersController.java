@@ -4,9 +4,11 @@ import com.scaler.conduit.dtos.UserLoginRequest;
 import com.scaler.conduit.dtos.UserSignupRequest;
 import com.scaler.conduit.entities.ErrorEntity;
 import com.scaler.conduit.entities.UserEntity;
+import com.scaler.conduit.security.JWTAuthenticationFilter.JWTAuthentication;
 import com.scaler.conduit.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,9 +25,14 @@ public class UsersController {
         return ResponseEntity.ok(users.findUserByUsername(username));
     }
 
+    @GetMapping("/user")
+    ResponseEntity<UserEntity> getCurrentUser(@AuthenticationPrincipal UserEntity userEntity) {
+        return ResponseEntity.ok(userEntity);
+    }
+
     @PostMapping("/users")
     ResponseEntity<UserEntity> registerUser(@RequestBody UserSignupRequest body) {
-        UserEntity newUser =  users.registerNewUser(
+        UserEntity newUser = users.registerNewUser(
                 body.getUser().getUsername(),
                 body.getUser().getPassword(),
                 body.getUser().getEmail()
@@ -36,7 +43,7 @@ public class UsersController {
 
     @PostMapping("/users/login")
     ResponseEntity<UserEntity> loginUser(@RequestBody UserLoginRequest body) {
-        UserEntity user =  users.verifyUser(
+        UserEntity user = users.verifyUser(
                 body.getUser().getEmail(),
                 body.getUser().getPassword()
         );

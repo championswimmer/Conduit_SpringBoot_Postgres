@@ -5,6 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.security.web.authentication.AuthenticationFilter;
 import org.springframework.stereotype.Component;
@@ -14,7 +16,7 @@ import java.util.Collection;
 
 @Component
 public class JWTAuthenticationFilter extends AuthenticationFilter {
-    static class JWTAuthentication implements Authentication {
+    public static class JWTAuthentication implements Authentication {
         private final String jwtString;
         private UserEntity userEntity;
 
@@ -42,7 +44,7 @@ public class JWTAuthenticationFilter extends AuthenticationFilter {
         }
 
         @Override
-        public Object getPrincipal() {
+        public UserEntity getPrincipal() {
             return userEntity;
         }
 
@@ -86,5 +88,11 @@ public class JWTAuthenticationFilter extends AuthenticationFilter {
 
     public JWTAuthenticationFilter(JWTAuthManager jwtAuthManager) {
         super(jwtAuthManager, new Converter());
+        this.setSuccessHandler((request, response, authentication) -> {
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        });
     }
+
+
+
 }
