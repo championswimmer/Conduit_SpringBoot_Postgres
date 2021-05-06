@@ -62,6 +62,13 @@ public class UserService {
         return user;
     }
 
+    public UserEntity updateUser(UserEntity userEntity) {
+        if (userEntity.getPassword() != null) {
+            userEntity.setPassword(bcryptEncoder.encode(userEntity.getPassword()));
+        }
+        return userRepo.save(userEntity);
+    }
+
     public UserEntity findUserById(Long userId) {
         return null;
     }
