@@ -15,4 +15,8 @@ public class UserEntity extends BaseEntity {
     private String bio;
     private String image;
     private String username;
+
+//    @ManyToMany(mappedBy = "favorited")
+//    @JoinColumn(name = "id")
+//    private Set<ArticleEntity> favorited = new HashSet<>();
 }
