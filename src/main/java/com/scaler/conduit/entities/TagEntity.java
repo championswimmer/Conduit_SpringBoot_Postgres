@@ -10,7 +10,6 @@ import javax.persistence.Id;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class TagEntity {
-    @Id
+public class TagEntity extends BaseEntity {
     private String name;
 }
