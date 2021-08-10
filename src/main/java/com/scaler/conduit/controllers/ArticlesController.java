@@ -31,7 +31,7 @@ public class ArticlesController {
             @RequestParam(value = "limit", required = false, defaultValue = "20") int limit,
             @RequestParam(value = "offset", required = false, defaultValue = "0") int offset
     ) {
-        //Todo: convert to MultiArticleResponse
+        //Todo: Convert to MultiArticleResponse and handle this request based on the authentication context.
         List<ArticleResponse> articleResponseList = new ArrayList<>();
         var articleEntities = articles.getAllArticles(limit, offset);
         articleEntities.forEach(article -> articleResponseList.add(articleObjectConverter.entityTorResponse(article)));
