@@ -74,12 +74,12 @@ public class JWTAuthenticationFilter extends AuthenticationFilter {
                 return null;
             }
 
-            if (!authHeader.startsWith("Token ")) {
+            if (!authHeader.startsWith("Bearer ")) {
                 logger.info("Authorization is not of Token type " + request.getRequestURL());
                 return null;
             }
 
-            String jwts = authHeader.replace("Token ", "");
+            String jwts = authHeader.replace("Bearer ", "");
 
             return new JWTAuthentication(jwts);
         }

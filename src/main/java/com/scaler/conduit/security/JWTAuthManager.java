@@ -7,10 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
-class JWTAuthManager implements AuthenticationManager {
+public class JWTAuthManager implements AuthenticationManager {
     @Autowired
     private JWTService jwtService;
     @Autowired
@@ -25,7 +26,11 @@ class JWTAuthManager implements AuthenticationManager {
         String username = jwtService.decodeJwt(jwtAuth.getCredentials());
         UserEntity userEntity = userService.findUserByUsername(username);
         jwtAuth.setUserEntity(userEntity);
-
         return jwtAuth;
+    }
+
+    public UserEntity getCurrentLoggedInUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return (UserEntity) authentication.getPrincipal();
     }
 }
