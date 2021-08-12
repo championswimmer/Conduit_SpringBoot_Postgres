@@ -11,7 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class JWTAuthManager implements AuthenticationManager {
+class JWTAuthManager implements AuthenticationManager {
     @Autowired
     private JWTService jwtService;
     @Autowired
@@ -27,10 +27,5 @@ public class JWTAuthManager implements AuthenticationManager {
         UserEntity userEntity = userService.findUserByUsername(username);
         jwtAuth.setUserEntity(userEntity);
         return jwtAuth;
-    }
-
-    public UserEntity getCurrentLoggedInUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return (UserEntity) authentication.getPrincipal();
     }
 }
