@@ -23,7 +23,7 @@ public class ArticleEntity extends BaseEntity {
     private List<TagEntity> tags;
 
 //    @ManyToMany(mappedBy = "favorited")
-//    private Set<UserEntity> favorited = new HashSet<>();
+//    public Set<UserEntity> fans;
 
     @ManyToOne(fetch = FetchType.EAGER)
     public UserEntity getAuthor() {

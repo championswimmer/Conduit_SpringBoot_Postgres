@@ -11,7 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
-class JWTAuthManager implements AuthenticationManager {
+public class JWTAuthManager implements AuthenticationManager {
     @Autowired
     private JWTService jwtService;
     @Autowired

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
     private final UserRepository userRepo;
-    private final JWTService jwtService;
     private final BCryptPasswordEncoder bcryptEncoder;
 
     public static class UserNotFoundException extends RuntimeException {
@@ -29,9 +28,8 @@ public class UserService {
         return new BCryptPasswordEncoder();
     }
 
-    public UserService(UserRepository userRepo, JWTService jwtService, BCryptPasswordEncoder bcryptEncoder) {
+    public UserService(UserRepository userRepo, BCryptPasswordEncoder bcryptEncoder) {
         this.userRepo = userRepo;
-        this.jwtService = jwtService;
         this.bcryptEncoder = bcryptEncoder;
     }
 

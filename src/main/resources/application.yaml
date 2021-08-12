@@ -7,7 +7,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update # TODO: not approprate for production
+      ddl-auto: create-drop # TODO: not approprate for production
     properties:
       hibernate.format_sql: true
 server:

@@ -4,6 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import java.util.List;
+import java.util.Set;
 
 @Entity(name = "users")
 @Getter
@@ -16,7 +21,10 @@ public class UserEntity extends BaseEntity {
     private String image;
     private String username;
 
-//    @ManyToMany(mappedBy = "favorited")
-//    @JoinColumn(name = "id")
-//    private Set<ArticleEntity> favorited = new HashSet<>();
+//    @ManyToMany
+//    @JoinTable(
+//            name = "favourited_article",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "article_id"))
+//    private Set<ArticleEntity> favorited;
 }
