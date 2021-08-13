@@ -3,7 +3,6 @@ package com.scaler.conduit.entities;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -21,9 +20,12 @@ public class ArticleEntity extends BaseEntity {
     private UserEntity author;
     private List<CommentEntity> comments;
     private List<TagEntity> tags;
+    private Set<UserEntity> fans;
 
-//    @ManyToMany(mappedBy = "favorited")
-//    public Set<UserEntity> fans;
+    @ManyToMany(mappedBy = "favorited")
+    public Set<UserEntity> getFans() {
+        return fans;
+    }
 
     @ManyToOne(fetch = FetchType.EAGER)
     public UserEntity getAuthor() {
