@@ -3,6 +3,7 @@ package com.scaler.conduit.security;
 import com.scaler.conduit.entities.UserEntity;
 import com.scaler.conduit.services.JWTService;
 import com.scaler.conduit.services.UserService;
+import io.jsonwebtoken.MalformedJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
@@ -17,7 +18,7 @@ class JWTAuthManager implements AuthenticationManager {
     private UserService userService;
 
     @Override
-    public JWTAuthenticationFilter.JWTAuthentication authenticate(Authentication authentication) throws AuthenticationException {
+    public JWTAuthenticationFilter.JWTAuthentication authenticate(Authentication authentication) throws AuthenticationException, MalformedJwtException {
         if (!(authentication instanceof JWTAuthenticationFilter.JWTAuthentication)) {
             throw new IllegalStateException("This Authentication Manager only deals with JWT Authentication");
         }
@@ -25,7 +26,6 @@ class JWTAuthManager implements AuthenticationManager {
         String username = jwtService.decodeJwt(jwtAuth.getCredentials());
         UserEntity userEntity = userService.findUserByUsername(username);
         jwtAuth.setUserEntity(userEntity);
-
         return jwtAuth;
     }
 }

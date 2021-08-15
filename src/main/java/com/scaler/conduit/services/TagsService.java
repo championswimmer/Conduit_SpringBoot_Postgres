@@ -17,4 +17,9 @@ public class TagsService {
     public List<TagEntity> getAllTags() {
         return tagsRepo.findAll();
     }
+
+    public TagEntity saveTag(String tagName) {
+        TagEntity tagEntity = new TagEntity(tagName);
+        return tagsRepo.save(tagEntity);
+    }
 }

@@ -10,6 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 public class ArticleEntity extends BaseEntity {
+    // must be unique
     private String slug;
     private String title;
     private String description;
@@ -23,13 +24,13 @@ public class ArticleEntity extends BaseEntity {
         return author;
     }
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "article_id")
     public List<CommentEntity> getComments() {
         return comments;
     }
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     public List<TagEntity> getTags() {
         return tags;
     }
