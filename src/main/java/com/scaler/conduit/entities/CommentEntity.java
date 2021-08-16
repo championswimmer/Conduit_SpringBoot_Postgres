@@ -14,6 +14,8 @@ public class CommentEntity extends BaseEntity {
 
     private UserEntity author;
 
+    private long article_id;
+
     @ManyToOne(targetEntity = UserEntity.class)
     public UserEntity getAuthor() {
         return author;

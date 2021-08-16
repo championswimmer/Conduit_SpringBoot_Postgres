@@ -3,9 +3,10 @@ package com.scaler.conduit.dtos.requests.articles;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
+
 public class UpdateArticleRequest {
     @JsonProperty("article")
-    CreateArticleRequest.Article article;
+    Article article;
 
     @Getter
     public class Article {
