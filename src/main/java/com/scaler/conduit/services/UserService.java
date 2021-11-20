@@ -84,13 +84,7 @@ public class UserService {
 
     public UserEntity followUser(String username, Long loggedInUserUserId) {
         UserEntity userToFollow = findUserByUsername(username);
-
-            userRepo.followUser(loggedInUserUserId, userToFollow.getId());
-//        } catch (Exception x) {
-//            System.err.println(x.getCause());
-//            System.err.println(x.getLocalizedMessage());
-//            System.err.println(x.toString());
-//        }
+        userRepo.followUser(loggedInUserUserId, userToFollow.getId());
         return userToFollow;
     }
 
