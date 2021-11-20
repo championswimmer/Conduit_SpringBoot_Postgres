@@ -14,13 +14,20 @@ import java.util.stream.Collectors;
 
 @Service
 public class ArticleObjectConverter {
-    public ArticleResponse entityTorResponse(ArticleEntity articleEntity) {
+    public ArticleResponse entityToResponse(ArticleEntity articleEntity) {
         List<String> tagNames = new ArrayList<>();
         articleEntity.getTags().forEach(tag -> {
             tagNames.add(tag.getName());
         });
+
         UserEntity author = articleEntity.getAuthor();
-        var authorResponse = AuthorResponse.builder().bio(author.getBio()).username(author.getUsername()).image(author.getImage()).following(false).build();
+        var authorResponse = AuthorResponse.builder()
+                .bio(author.getBio())
+                .username(author.getUsername())
+                .image(author.getImage())
+                .following(false)
+                .build();
+
         return new ArticleResponse(Article.builder().slug(articleEntity.getSlug())
                 .title(articleEntity.getTitle())
                 .body(articleEntity.getBody())

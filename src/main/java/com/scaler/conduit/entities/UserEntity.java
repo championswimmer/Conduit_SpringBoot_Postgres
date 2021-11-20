@@ -1,16 +1,18 @@
 package com.scaler.conduit.entities;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "users")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class UserEntity extends BaseEntity {
 
     private String email;
@@ -19,13 +21,18 @@ public class UserEntity extends BaseEntity {
     private String image;
     private String username;
 
+    private Set<ArticleEntity> favorite;
+    private Set<UserEntity> followers;
 
-    private Set<ArticleEntity> favorited;
+    @ManyToMany(mappedBy = "fans", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    public Set<ArticleEntity> getFavorite() {
+        return favorite;
+    }
 
     @ManyToMany
-    @JoinTable(name = "favourites")
-    public Set<ArticleEntity> getFavorited() {
-        return favorited;
+    @JoinTable(name = "user_followers")
+    private Set<UserEntity> getFollowers() {
+        return followers;
     }
 
 }
