@@ -41,4 +41,27 @@ public class ArticleService {
                                         .build();
         return articleRepo.save(articleEntity);
     }
+
+    public ArticleEntity updateArticle(ArticleEntity entity, UserEntity currentLoggedInUser) {
+        var articleSlug = this.getSlug(entity.getTitle());
+        var articleEntity = ArticleEntity.builder()
+                .slug(articleSlug)
+                .title(entity.getTitle())
+                .description(entity.getDescription())
+                .body(entity.getBody())
+                .author(currentLoggedInUser)
+                .build();
+        return articleRepo.save(articleEntity);
+    }
+
+    public ArticleEntity getArticleBySlug(String slug) {
+        return articleRepo.findBySlug(slug);
+    }
+
+    public ArticleEntity deleteArticleBySlug(String slug) {
+        var entity = getArticleBySlug(slug);
+        articleRepo.deleteById(entity.getId());
+        return entity;
+    }
+
 }

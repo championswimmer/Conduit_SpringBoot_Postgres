@@ -45,4 +45,33 @@ public class ArticlesController {
         );
         return ResponseEntity.ok(articleObjectConverter.entityTorResponse(articleEntity));
     }
+
+    @GetMapping("/articles/{slug}")
+    ResponseEntity<ArticleResponse> getArticleBySlug(@PathVariable("slug") String slug) {
+        var articleEntity = articles.getArticleBySlug(slug);
+        return ResponseEntity.ok(articleObjectConverter.entityTorResponse(articleEntity));
+    }
+
+    @PatchMapping("/articles/{slug}")
+    ResponseEntity<ArticleResponse> updateUser(
+            @AuthenticationPrincipal UserEntity userEntity,
+            @RequestBody ArticleCreateRequest body,
+            @PathVariable("slug") String slug
+    ) {
+        var articleEntity = articles.getArticleBySlug(slug);
+        if (body.getArticle().getTitle() != null) articleEntity.setTitle(body.getArticle().getTitle());
+        if (body.getArticle().getDescription()  != null) articleEntity.setDescription(body.getArticle().getDescription());
+        if (body.getArticle().getBody() != null) articleEntity.setBody(body.getArticle().getBody());
+
+        return ResponseEntity.ok(articleObjectConverter.entityTorResponse(articles.deleteArticleBySlug(slug)));
+
+    }
+
+    @DeleteMapping("/articles/{slug}")
+    ResponseEntity<ArticleResponse> deleteArticleBySlug(@AuthenticationPrincipal UserEntity userEntity,
+                                                        @PathVariable("slug") String slug) {
+        var articleEntity = articles.getArticleBySlug(slug);
+        return ResponseEntity.ok(articleObjectConverter.entityTorResponse(articleEntity));
+    }
+
 }
