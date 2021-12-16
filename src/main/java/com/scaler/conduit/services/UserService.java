@@ -23,6 +23,12 @@ public class UserService {
         }
     }
 
+    public static class UsernameConflictException extends SecurityException {
+        public UsernameConflictException() {
+            super("Username already exists");
+        }
+    }
+
     @Bean
     public static BCryptPasswordEncoder bcryptEncoder() {
         return new BCryptPasswordEncoder();
@@ -34,12 +40,15 @@ public class UserService {
     }
 
     public UserEntity registerNewUser(String username, String password, String email) {
-        UserEntity newUser = new UserEntity();
-        newUser.setUsername(username);
-        newUser.setEmail(email);
-        newUser.setPassword(bcryptEncoder.encode(password));
-        newUser = userRepo.save(newUser);
+        UserEntity user = userRepo.findUserEntityByUsername(username);
+        if (user != null)
+            throw new UsernameConflictException();
 
+        UserEntity newUser = userRepo.save(UserEntity.builder()
+                .username(username)
+                .email(email)
+                .password(bcryptEncoder.encode(password))
+                .build());
         return userRepo.save(newUser);
     }
 
@@ -57,7 +66,6 @@ public class UserService {
         if (!bcryptEncoder.matches(password, user.getPassword()))
             throw new UserPasswordIncorectException();
 
-
         return user;
     }
 
@@ -68,13 +76,22 @@ public class UserService {
         return userRepo.save(userEntity);
     }
 
-    public UserEntity findUserById(Long userId) {
-        return null;
-    }
-
     public UserEntity findUserByUsername(String username) {
         UserEntity user = userRepo.findUserEntityByUsername(username);
         if (user == null) throw new UserNotFoundException();
         return user;
     }
+
+    public UserEntity followUser(String username, Long loggedInUserUserId) {
+        UserEntity userToFollow = findUserByUsername(username);
+        userRepo.followUser(loggedInUserUserId, userToFollow.getId());
+        return userToFollow;
+    }
+
+    public UserEntity unfollowUser(String username, Long loggedInUserUserId) {
+        UserEntity userToUnfollow = findUserByUsername(username);
+        userRepo.unfollowUser(loggedInUserUserId, userToUnfollow.getId());
+        return userToUnfollow;
+    }
+
 }

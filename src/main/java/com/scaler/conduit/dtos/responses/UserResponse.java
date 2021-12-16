@@ -36,7 +36,7 @@ public class UserResponse {
 
     public static UserResponse fromUserEntity(UserEntity userEntity, String token) {
         return new UserResponse(
-                new UserResponse.User(
+                new User(
                         userEntity.getImage(),
                         userEntity.getBio(),
                         userEntity.getEmail(),

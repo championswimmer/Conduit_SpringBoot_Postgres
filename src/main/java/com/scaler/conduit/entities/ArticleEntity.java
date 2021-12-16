@@ -22,7 +22,8 @@ public class ArticleEntity extends BaseEntity {
     private List<TagEntity> tags;
     private Set<UserEntity> fans;
 
-    @ManyToMany(mappedBy = "favorited")
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "favourites")
     public Set<UserEntity> getFans() {
         return fans;
     }

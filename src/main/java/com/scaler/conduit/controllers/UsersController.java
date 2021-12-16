@@ -4,6 +4,7 @@ import com.scaler.conduit.converters.UserObjectConverter;
 import com.scaler.conduit.dtos.requests.UserLoginRequest;
 import com.scaler.conduit.dtos.requests.UserSignupRequest;
 import com.scaler.conduit.dtos.requests.UserUpdateRequest;
+import com.scaler.conduit.dtos.responses.UserProfileResponse;
 import com.scaler.conduit.dtos.responses.UserResponse;
 import com.scaler.conduit.entities.ErrorEntity;
 import com.scaler.conduit.entities.UserEntity;
@@ -24,16 +25,13 @@ public class UsersController {
         this.converter = converter;
     }
 
-    @GetMapping("/profiles/{username}")
-    ResponseEntity<UserResponse> getUserByUsername(@PathVariable("username") String username) {
-        return ResponseEntity.ok(
-                converter.entityToResponse(users.findUserByUsername(username))
+    @PostMapping("/users/login")
+    ResponseEntity<UserResponse> loginUser(@RequestBody UserLoginRequest body) {
+        UserEntity user = users.verifyUser(
+                body.getUser().getEmail(),
+                body.getUser().getPassword()
         );
-    }
-
-    @GetMapping("/user")
-    ResponseEntity<UserResponse> getCurrentUser(@AuthenticationPrincipal UserEntity userEntity) {
-        return ResponseEntity.ok(converter.entityToResponse(userEntity));
+        return ResponseEntity.ok(converter.entityToResponse(user));
     }
 
     @PostMapping("/users")
@@ -44,19 +42,14 @@ public class UsersController {
                 body.getUser().getEmail()
         );
         return new ResponseEntity<>(converter.entityToResponse(newUser), HttpStatus.CREATED);
-
     }
 
-    @PostMapping("/users/login")
-    ResponseEntity<UserResponse> loginUser(@RequestBody UserLoginRequest body) {
-        UserEntity user = users.verifyUser(
-                body.getUser().getEmail(),
-                body.getUser().getPassword()
-        );
-        return ResponseEntity.ok(converter.entityToResponse(user));
+    @GetMapping("/user")
+    ResponseEntity<UserResponse> getCurrentUser(@AuthenticationPrincipal UserEntity userEntity) {
+        return ResponseEntity.ok(converter.entityToResponse(userEntity));
     }
 
-    @PatchMapping("/user")
+    @PutMapping("/user")
     ResponseEntity<UserResponse> updateUser(
             @AuthenticationPrincipal UserEntity userEntity,
             @RequestBody UserUpdateRequest body
@@ -71,7 +64,31 @@ public class UsersController {
                 converter.entityToResponse(users.updateUser(userEntity)),
                 HttpStatus.ACCEPTED
         );
+    }
 
+    @GetMapping("/profiles/{username}")
+    ResponseEntity<UserProfileResponse> getUserProfile(@PathVariable("username") String username) {
+        return ResponseEntity.ok(
+                converter.entityToUserProfileResponse(users.findUserByUsername(username))
+        );
+    }
+
+    @PostMapping("/profiles/{username}/follow")
+    ResponseEntity<UserProfileResponse> followUser(
+            @PathVariable("username") String username,
+            @AuthenticationPrincipal UserEntity userEntity
+    ) {
+        UserEntity response = users.followUser(username, userEntity.getId());
+        return ResponseEntity.ok(converter.entityToUserProfileResponse(response));
+    }
+
+    @DeleteMapping("/profiles/{username}/follow")
+    ResponseEntity<UserProfileResponse> unfollowUser(
+            @PathVariable("username") String username,
+            @AuthenticationPrincipal UserEntity userEntity
+    ) {
+        UserEntity response = users.unfollowUser(username, userEntity.getId());
+        return ResponseEntity.ok(converter.entityToUserProfileResponse(response));
     }
 
 
@@ -82,10 +99,17 @@ public class UsersController {
         if (exception instanceof UserService.UserNotFoundException) {
             errorStatus = HttpStatus.NOT_FOUND;
         }
+        if (exception instanceof UserService.UsernameConflictException) {
+            errorStatus = HttpStatus.CONFLICT;
+        }
+        if (exception.toString().contains("DataIntegrityViolationException") &&
+                exception.toString().contains("pkey")) {
+            message = "Data Already Exists";
+            errorStatus = HttpStatus.CONFLICT;
+        }
 
-        return new ResponseEntity<ErrorEntity>(
-                ErrorEntity.from(message),
-                errorStatus
+        return new ResponseEntity<>(
+                ErrorEntity.from(message), errorStatus
         );
     }
 
